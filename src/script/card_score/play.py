@@ -12,33 +12,20 @@ random.shuffle(card_list)
 #player 순서 결정
 player = ["player", "computer1", "computer2", "computer3"]
 
-winner = "player"
+idx = 0
 
-while winner != player[0] :
-    player.append(player[0])
-    del player[0]
-
-print(player)
+print(player[idx])
 
 #카드 분배
-player_card = []
-computer1_card = []
-computer2_card = []
-computer3_card = []
+playing_card = [[], [], [], []]
 
 for i in range(4) :
-    player_card.append(card_list[0])
-    del card_list[0]
-    computer1_card.append(card_list[0])
-    del card_list[0]
-    computer2_card.append(card_list[0])
-    del card_list[0]
-    computer3_card.append(card_list[0])
-    del card_list[0]
+    for j in range(4) :
+        playing_card[(idx + j) % 4].append(card_list[0])
+        del card_list[0]
 
 # 카드 버리기
 drop_card = [] #버릴 카드 넘겨받기
-player_card.remove(drop_card[0])
-computer1_card.remove(drop_card[1])
-computer2_card.remove(drop_card[2])
-computer3_card.remove(drop_card[3])
+
+for i in range(4) :
+    playing_card[(idx + j) % 4].remove(drop_card[j])
