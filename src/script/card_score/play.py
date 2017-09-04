@@ -18,14 +18,17 @@ print(player[idx])
 
 #카드 분배
 playing_card = [[], [], [], []]
+def deal(playing_card) :
+    for i in range(4) :
+        for j in range(4) :
+            playing_card[(idx + j) % 4].append(card_list[0])
+            del card_list[0]
+        
 
-for i in range(4) :
-    for j in range(4) :
-        playing_card[(idx + j) % 4].append(card_list[0])
-        del card_list[0]
+
+
 
 # 카드 버리기
-drop_card = [] #버릴 카드 넘겨받기
-
-for i in range(4) :
-    playing_card[(idx + j) % 4].remove(drop_card[j])
+def card_drop(drop_card) :
+        for i in range(4) :
+                playing_card[(idx + j) % 4].remove(drop_card[j])
