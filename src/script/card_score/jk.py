@@ -38,10 +38,10 @@ def checkScore(pattern, number) :  # pattern-카드 무늬 배열, number-카드
     elif() :  # one pair
         score += 100
 
-    elif() :  # top
+    elif() :  pass
+        # top
         # don't plus score
-        if() :
 
-class check :
-    def patternCheck(self) :
+#class check :
+    #def patternCheck(self) :
         
