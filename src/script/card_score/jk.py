@@ -1,11 +1,25 @@
 class check :
-    def __init__(self, pattern, number) :  # pattern-카드 무늬 배열, number-카드 숫자 배열
-        self.pattern = pattern
-        self.number = number
+    def __init__(self, card) :  # pattern-카드 무늬 배열, number-카드 숫자 배열
+        self.cardNumber = card
         self.patternCheck()
         self.numberCheck()
         self.straightCheck()
         self.checkScore()
+
+
+    def check(self) :
+        self.cardNumber = list(4)
+        for i in self.cardNumber :
+            i=list(13)
+        for i in range(7) :
+            if(self.card[i][0] == "S") :
+                self.cardNumber[0].append(self.card[i][1:])
+            elif(self.card[i][0] == "D") :
+                self.cardNumber[1].append(self.card[i][1:])
+            elif(self.card[i][0] == "H") :
+                self.cardNumber[2].append(self.card[i][1:])
+            elif(self.card[i][0] == "C") :
+                self.cardNumber[3].append(self.card[i][1:])
 
     def patternCheck(self) :  # 각 패턴이 몇 개인지 확인
         self.patternCount = [0, 0, 0, 0]  # 순서대로 스다하클
@@ -106,6 +120,5 @@ class check :
 
 
 # 테스트
-testPattern = ["S", "D", "D", "S", "H", "C", "C"]
-testNumber = [1, 3, 7, 3, 7, 9, 10]
-test = check(testPattern, testNumber)
+testCard = ["S01", "D12", "S13", "H04", "C05", "H06", "S07"]
+test = check(testCard)
