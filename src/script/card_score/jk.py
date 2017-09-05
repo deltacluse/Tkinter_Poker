@@ -4,6 +4,8 @@ class check :
         self.number = number
         self.patternCheck()
         self.numberCheck()
+		self.straightCheck()
+		self.checkScore()
 
     def patternCheck(self) :  # 각 패턴이 몇 개인지 확인
         self.patternCount = [0, 0, 0, 0]  # 순서대로 스다하클
@@ -39,6 +41,24 @@ class check :
 
 #        print(self.numberCount[i])  # 각 숫자의 개수가 잘 들어갔나 테스트
 
+	def straightCheck(self) :
+		self.straightNumber	= []
+		for i in range(14) :
+			if(self.numberCount[i]>=1) :
+				self.straightNumber.append(i)
+		self.straightCount = 0
+		for i in range(14) :
+			if(self.straightNumber[i+1] == self.straightNumber[i]+1) :
+				self.straightCount += 1
+				if(self.straightCount == 5) :
+					break
+			else :
+				self.straightCount = 0
+			
+		print(self.straightNumber)
+		
+		
+
 
     def checkScore(self):  # 족보 별 점수 계산
 
@@ -62,13 +82,13 @@ class check :
         elif (self.patternMax == 5):  # flush
             score += 700
 
-        elif ():  # mountain
+        elif (self.straightCount == 5):  # mountain
             score += 600
 
-        elif ():  # back straight
+        elif (self.straightCount == 5):  # back straight
             score += 500
 
-        elif ():  # straight
+        elif (self.straightCount == 5):  # straight
             score += 400
 
         elif (self.countNumber[3] >= 1):  # triple
@@ -92,3 +112,4 @@ testPattern = ["S", "D", "D", "S", "H", "C", "C"]
 testNumber = [1, 3, 7, 3, 7, 9, 10]
 test = check(testPattern, testNumber)
 test.checkScore()
+test.straightCheck()
