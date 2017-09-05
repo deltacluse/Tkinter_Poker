@@ -5,8 +5,8 @@ class check :
         self.patternCheck()
         self.numberCheck()
 
-    def patternCheck(self) :
-        self.patternCount = [0, 0, 0, 0]
+    def patternCheck(self) :  # 각 패턴이 몇 개인지 확인
+        self.patternCount = [0, 0, 0, 0]  # 순서대로 스다하클
         for i in self.pattern :
             if(i=="S") : self.patternCount[0] += 1
             elif(i=="D") : self.patternCount[1] += 1
@@ -14,12 +14,12 @@ class check :
             elif(i=="C") : self.patternCount[3] += 1
 
         self.patternMax = 0
-        for i in range(4) :
+        for i in range(4) :  # 각 패턴의 개수
             if(self.patternMax<self.patternCount[i]) :
                 self.patternMax = self.patternCount[i]
-#            print(self.patternCount[i])
+#            print(self.patternCount[i])  # 각 패턴의 개수가 잘 들어갔나 테스트
 
-    def numberCheck(self) :
+    def numberCheck(self) :  # 각 숫자가 몇 개인지 확인
 
         self.numberCount = [0]
         for i in range(13) :
@@ -32,15 +32,15 @@ class check :
             self.countNumber[i] += 1
 
         self.numberMax = 0
-        for i in range(14) :
+        for i in range(14) :  # 제일 많은 수와 그 개수
             if(self.numberMax<self.numberCount[i]) :
                 self.numberMax = self.numberCount[i]
                 self.numberMaxCount = i
 
-#        print(self.numberCount[i])
+#        print(self.numberCount[i])  # 각 숫자의 개수가 잘 들어갔나 테스트
 
 
-    def checkScore(self):
+    def checkScore(self):  # 족보 별 점수 계산
 
         score = 0
 
@@ -87,6 +87,7 @@ class check :
         print(score)
 
 
+# 테스트
 testPattern = ["S", "D", "D", "S", "H", "C", "C"]
 testNumber = [1, 3, 7, 3, 7, 9, 10]
 test = check(testPattern, testNumber)
