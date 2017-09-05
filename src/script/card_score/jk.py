@@ -111,5 +111,3 @@ class check :
 testPattern = ["S", "D", "D", "S", "H", "C", "C"]
 testNumber = [1, 3, 7, 3, 7, 9, 10]
 test = check(testPattern, testNumber)
-test.checkScore()
-test.straightCheck()
