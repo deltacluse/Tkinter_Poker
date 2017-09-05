@@ -14,15 +14,23 @@ class card :
 		random.shuffle(playing_deck)
 		return playing_deck
 	
+class gameStart :
+	def __init__(self) :
+	
+	#순서 결정
+	def order(self, winner) :
+		if winner == 0 :
+			return 0
+		else :
+			return winner
+	
 	#카드 분배 
-	def deal(self) :
+	def deal(self, idx) :
 		for i in range(3) :
 			for j in range(4) :
 				playing_card[(idx + j) % 4].append(card_list[0])
 				del card_list[0]
 		return playing_card
 	
-
 #player 순서 결정
 player = ["player", "computer1", "computer2", "computer3"]
-idx = 0
