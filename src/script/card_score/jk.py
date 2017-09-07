@@ -9,7 +9,6 @@ class check :
         self.straightCheck()
         self.checkScore()
 
-
     def check(self) :
         self.cardNumber = [[0 for col in range(14)] for row in range(4)]  # 패턴 별로 숫자 입
         for i in range(7) :
@@ -29,7 +28,7 @@ class check :
 
         self.patternMax = 0
         for i in range(4) :  # 각 패턴의 개수
-            if(self.patternMax<self.patternCount[i]) :
+            if(self.patternMax < self.patternCount[i]) :
                 self.patternMax = self.patternCount[i]
 #            print(self.patternCount[i])  # 각 패턴의 개수가 잘 들어갔나 테스트
 
@@ -51,7 +50,7 @@ class check :
 
         self.numberMax = 0
         for i in range(14) :  # 제일 많은 수와 그 개수
-            if(self.numberMax<self.numberCount[i]) :
+            if(self.numberMax <= self.numberCount[i]) :
                 self.numberMax = self.numberCount[i]
                 self.numberMaxCount = i
 
@@ -92,7 +91,7 @@ class check :
             score += 900
 
         elif (self.countNumber[3] == 1 and self.countNumber[2] >= 1):  # full house
-            score += 800
+            score += 800 + self.topCheck([self.numberMaxCount])
 
         elif (self.patternMax == 5):  # flush
             score += 700
@@ -107,20 +106,32 @@ class check :
             score += 400
 
         elif (self.countNumber[3] >= 1):  # triple
-            score += 300
+            score += 300 + self.topCheck([self.numberMaxCount])
 
         elif (self.countNumber[2] >= 2):  # two pair
-            score += 200
+            score += 200 + self.topCheck([self.numberMaxCount])
 
         elif (self.countNumber[2] == 1):  # one pair
-            score += 100
+            score += 100 + self.topCheck([self.numberMaxCount])
+
 
         else :  # top
             # don't plus score
-            pass
+            score += self.topCheck(self.straightNumber)
 
         print(score)
-        
+
+    def topCheck(self, topList) :
+        maxNumber = 0
+        for i in topList :
+            if(i == 1) :
+                return 14
+            else :
+                if(maxNumber < i) :
+                    maxNumber = i
+        return maxNumber
+
+
 # 테스트
-testCard = ["S03", "D12", "S12", "H04", "C05", "H06", "S07"]
+testCard = ["S01", "D01", "S01", "H11", "C05", "H05", "S07"]
 test = check(testCard)
