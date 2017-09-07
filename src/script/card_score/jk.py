@@ -88,7 +88,7 @@ class check :
             score += 1000
 
         elif (self.countNumber[4] == 1):  # four card
-            score += 900
+            score += 900 + self.topCheck([self.numberMaxCount])
 
         elif (self.countNumber[3] == 1 and self.countNumber[2] >= 1):  # full house
             score += 800 + self.topCheck([self.numberMaxCount])
@@ -130,8 +130,9 @@ class check :
                 if(maxNumber < i) :
                     maxNumber = i
         return maxNumber
+    def flushCheck(self.
 
 
 # 테스트
-testCard = ["S01", "D01", "S01", "H11", "C05", "H05", "S07"]
+testCard = ["S01", "D01", "H01", "C05", "C09", "H05", "S07"]
 test = check(testCard)
