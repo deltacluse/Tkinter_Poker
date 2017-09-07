@@ -19,7 +19,7 @@ class check :
             elif(self.card[i][0] == "H") :
                 self.cardNumber[2].append(self.card[i][1:])
             elif(self.card[i][0] == "C") :
-                self.cardNumber[3].append(self.card[i][1:])
+                self.cardNumber[3].append(self.card[i][1:]) 
 
     def patternCheck(self) :  # 각 패턴이 몇 개인지 확인
         self.patternCount = [0, 0, 0, 0]  # 순서대로 스다하클
