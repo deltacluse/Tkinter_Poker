@@ -1,6 +1,9 @@
 class check :
     def __init__(self, card) :  # pattern-카드 무늬 배열, number-카드 숫자 배열
-        self.cardNumber = card
+        self.card = card
+        self.check()
+        print(self.cardNumber)
+        
         self.patternCheck()
         self.numberCheck()
         self.straightCheck()
@@ -8,26 +11,21 @@ class check :
 
 
     def check(self) :
-        self.cardNumber = list(4)
-        for i in self.cardNumber :
-            i=list(13)
+        self.cardNumber = [[0 for col in range(14)] for row in range(4)]  # 패턴 별로 숫자 입
         for i in range(7) :
             if(self.card[i][0] == "S") :
-                self.cardNumber[0].append(self.card[i][1:])
+                self.cardNumber[0][int(self.card[i][1:])] += 1
             elif(self.card[i][0] == "D") :
-                self.cardNumber[1].append(self.card[i][1:])
+                self.cardNumber[1][int(self.card[i][1:])] += 1
             elif(self.card[i][0] == "H") :
-                self.cardNumber[2].append(self.card[i][1:])
+                self.cardNumber[2][int(self.card[i][1:])] += 1
             elif(self.card[i][0] == "C") :
-                self.cardNumber[3].append(self.card[i][1:])
+                self.cardNumber[3][int(self.card[i][1:])] += 1
 
     def patternCheck(self) :  # 각 패턴이 몇 개인지 확인
         self.patternCount = [0, 0, 0, 0]  # 순서대로 스다하클
-        for i in self.pattern :
-            if(i=="S") : self.patternCount[0] += 1
-            elif(i=="D") : self.patternCount[1] += 1
-            elif(i=="H") : self.patternCount[2] += 1
-            elif(i=="C") : self.patternCount[3] += 1
+        for i in range(4) :
+            self.patternCount[i] = len(self.card[i])
 
         self.patternMax = 0
         for i in range(4) :  # 각 패턴의 개수
@@ -40,8 +38,12 @@ class check :
         self.numberCount = [0]
         for i in range(13) :
             self.numberCount.append(0)
-        for i in self.number :
-            self.numberCount[i] += 1
+        for i in range(4) :
+            for j in range(14) :
+                if(self.cardNumber[i][j] >= 1) :
+                    self.numberCount[j] += 1
+        self.numberCount[0] = 0
+        print(self.numberCount)
 
         self.countNumber = [0, 0, 0, 0, 0]
         for i in self.numberCount :
@@ -60,17 +62,18 @@ class check :
         for i in range(14) :
             if(self.numberCount[i] >= 1) :
                 self.straightNumber.append(i)
-        self.straightCount = 0
-        for i in range(len(self.straightNumber)-1) :
-            if(self.straightNumber[i+1] == self.straightNumber[i]+1) :
+
+        print(self.straightNumber)
+        
+        self.straightCount = 1
+        for i in range(len(self.straightNumber) - 1) :
+            if(self.straightNumber[i] + 1 == self.straightNumber[i+1]) :
                 self.straightCount += 1
                 if(self.straightCount == 5) :
                     break
             else :
-                self.straightCount = 0
-
-        print(self.straightNumber)
-
+                self.straightCount = 1
+        print(self.straightCount)
 
     def checkScore(self):  # 족보 별 점수 계산
 
@@ -117,8 +120,7 @@ class check :
             pass
 
         print(score)
-
-
+        
 # 테스트
-testCard = ["S01", "D12", "S13", "H04", "C05", "H06", "S07"]
+testCard = ["S03", "D12", "S12", "H04", "C05", "H06", "S07"]
 test = check(testCard)
