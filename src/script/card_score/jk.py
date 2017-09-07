@@ -2,7 +2,7 @@ class check :
     def __init__(self, card) :  # pattern-카드 무늬 배열, number-카드 숫자 배열
         self.card = card
         self.check()
-        print(self.cardNumber)
+        print("self.cardNumber : " + format(self.cardNumber), sep=' ')
         
         self.patternCheck()
         self.numberCheck()
@@ -26,12 +26,6 @@ class check :
         for i in range(4) :
             self.patternCount[i] = len(self.card[i])
 
-        self.patternMax = 0
-        for i in range(4) :  # 각 패턴의 개수
-            if(self.patternMax < self.patternCount[i]) :
-                self.patternMax = self.patternCount[i]
-#            print(self.patternCount[i])  # 각 패턴의 개수가 잘 들어갔나 테스트
-
     def numberCheck(self) :  # 각 숫자가 몇 개인지 확인
 
         self.numberCount = [0]
@@ -42,7 +36,7 @@ class check :
                 if(self.cardNumber[i][j] >= 1) :
                     self.numberCount[j] += 1
         self.numberCount[0] = 0
-        print(self.numberCount)
+        print("self.numberCount : " + format(self.numberCount), sep=' ')
 
         self.countNumber = [0, 0, 0, 0, 0]
         for i in self.numberCount :
@@ -62,17 +56,27 @@ class check :
             if(self.numberCount[i] >= 1) :
                 self.straightNumber.append(i)
 
-        print(self.straightNumber)
-        
+        print("self.straightNumber : " + format(self.straightNumber), sep=' ')
+
+        self.straightFisrt = self.straightNumber[0]
+        print("self.straightFisrt : " + format(self.straightFisrt), sep=' ')
+
         self.straightCount = 1
         for i in range(len(self.straightNumber) - 1) :
             if(self.straightNumber[i] + 1 == self.straightNumber[i+1]) :
                 self.straightCount += 1
+                self.straightLast = self.straightNumber[i+1]
                 if(self.straightCount == 5) :
                     break
             else :
                 self.straightCount = 1
-        print(self.straightCount)
+                self.straightFisrt = self.straightNumber[i+1]
+
+        print("self.straightCount : " + format(self.straightCount), sep=' ')
+
+    def mountainCheck(self) :
+        if(self.straightNumber[0] == 1 and self.straightCount == 4 and self.straightFisrt == 10 and self.straightLast == 13) :
+            return True
 
     def checkScore(self):  # 족보 별 점수 계산
 
@@ -91,37 +95,37 @@ class check :
             score += 900
 
         elif (self.countNumber[3] == 1 and self.countNumber[2] >= 1):  # full house
-            score += 800 + self.topCheck([self.numberMaxCount])
+            score += 800 + self.topScore([self.numberMaxCount])
 
-        elif (self.patternMax == 5):  # flush
-            score += 700
+        elif (max(self.patternCount) == 5):  # flush
+            score += 700 + self.flushScore()
 
-        elif (self.straightCount == 5):  # mountain
+        elif (self.mountainCheck()):  # mountain
             score += 600
 
-        elif (self.straightCount == 5):  # back straight
+        elif (self.straightCount == 5 and self.straightFisrt == 1):  # back straight
             score += 500
 
         elif (self.straightCount == 5):  # straight
             score += 400
 
         elif (self.countNumber[3] >= 1):  # triple
-            score += 300 + self.topCheck([self.numberMaxCount])
+            score += 300 + self.topScore([self.numberMaxCount])
 
         elif (self.countNumber[2] >= 2):  # two pair
-            score += 200 + self.topCheck([self.numberMaxCount])
+            score += 200 + self.topScore([self.numberMaxCount])
 
         elif (self.countNumber[2] == 1):  # one pair
-            score += 100 + self.topCheck([self.numberMaxCount])
+            score += 100 + self.topScore([self.numberMaxCount])
 
 
         else :  # top
             # don't plus score
-            score += self.topCheck(self.straightNumber)
+            score += self.topScore(self.straightNumber)
 
-        print(score)
+        print("score : " + format(score), sep=' ')
 
-    def topCheck(self, topList) :
+    def topScore(self, topList) :
         maxNumber = 0
         for i in topList :
             if(i == 1) :
@@ -131,7 +135,11 @@ class check :
                     maxNumber = i
         return maxNumber
 
+    def flushScore(self) :
+        for i in range(4) :
+            if(self.patternCount[i] == 5) :
+                return i
 
 # 테스트
-testCard = ["S01", "D01", "S01", "H11", "C05", "H05", "S07"]
+testCard = ["S01", "D02", "S03", "H10", "C11", "H12", "S13"]
 test = check(testCard)
