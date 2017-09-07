@@ -15,8 +15,11 @@
       <file leaf-file-name="jk.py" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/jk.py">
           <provider selected="true" editor-type-id="text-editor">
+<<<<<<< HEAD
             <state relative-caret-position="414">
               <caret line="73" column="0" lean-forward="true" selection-start-line="73" selection-start-column="0" selection-end-line="73" selection-end-column="0" />
+=======
+>>>>>>> c413945c765467076dc99a64404898de4ebb3264
               <folding />
             </state>
           </provider>
