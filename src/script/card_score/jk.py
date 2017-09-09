@@ -6,6 +6,7 @@ class check :
         
         self.patternCheck()
         self.numberCheck()
+        self.straightFlushNumber()
         self.straightCheck()
         self.checkScore()
 
@@ -59,7 +60,7 @@ class check :
         print("self.straightNumber : " + format(self.straightNumber), sep=' ')
 
         self.straightFisrt = self.straightNumber[0]
-        print("self.straightFisrt : " + format(self.straightFisrt), sep=' ')
+        print("1 self.straightFisrt : " + format(self.straightFisrt), sep=' ')
 
         self.straightCount = 1
         for i in range(len(self.straightNumber) - 1) :
@@ -72,7 +73,38 @@ class check :
                 self.straightCount = 1
                 self.straightFisrt = self.straightNumber[i+1]
 
+        print("2 self.straightFisrt : " + format(self.straightFisrt), sep=' ')
+        print("self.straightLast : " + format(self.straightLast), sep=' ')
         print("self.straightCount : " + format(self.straightCount), sep=' ')
+
+    def straightFlushCheck(self) :
+        self.straightFlushNumber = list(4)
+        for i in range(4) :
+            self.straightFlushNumber[i] = []
+
+            for j in range(14) :
+                if(self.cardNumber[i][j] >= 1) :
+                    self.straightFlushNumber[i].append(j)
+
+            print("self.straightFlushNumber : " + format(self.straightFlushNumber), sep=' ')
+
+            self.straightFlushFisrt = self.straightFlushNumber[i][0]
+            print("1 self.straightFlushFisrt : " + format(self.straightFlushFisrt), sep=' ')
+
+            self.straightFlushCount = 1
+            for i in range(len(self.straightFlushNumber) - 1) :
+                if(self.straightFlushNumber[i] + 1 == self.straightFlushNumber[i+1]) :
+                    self.straightFlushCount += 1
+                    self.straightFlushLast = self.straightFlushNumber[i+1]
+                    if(self.straightFlushCount == 5) :
+                        break
+                else :
+                    self.straightFlushCount = 1
+                    self.straightFlushFisrt = self.straightFlushNumber[i+1]
+
+            print("2 self.straightFlushFisrt : " + format(self.straightFlushFisrt), sep=' ')
+            print("self.straightFlushLast : " + format(self.straightFlushLast), sep=' ')
+            print("self.straightFlushCount : " + format(self.straightFlushCount), sep=' ')
 
     def mountainCheck(self) :
         if(self.straightNumber[0] == 1 and self.straightCount == 4 and self.straightFisrt == 10 and self.straightLast == 13) :
@@ -107,7 +139,7 @@ class check :
             score += 500
 
         elif (self.straightCount == 5):  # straight
-            score += 400
+            score += 400 + self.straightLast
 
         elif (self.countNumber[3] >= 1):  # triple
             score += 300 + self.topScore([self.numberMaxCount])
@@ -141,5 +173,5 @@ class check :
                 return i
 
 # 테스트
-testCard = ["S01", "D02", "S03", "H10", "C11", "H12", "S13"]
+testCard = ["S06", "D02", "S03", "H04", "C05", "H12", "S13"]
 test = check(testCard)
