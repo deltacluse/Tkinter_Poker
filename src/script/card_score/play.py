@@ -33,7 +33,7 @@ class gameStart :
 				playing_card[(idx + j) % 4].append(card_list[0])
 				del card_list[0]
 		return playing_card
-	
+
 	# 분배
 	def deal(self, idx) :
 		for i in range(len(playing_card)) :
