@@ -96,7 +96,7 @@ class check:
 
         print("2 self.straight_first : " + format(self.straight_first), sep=' ')
         print("self.straight_last : " + format(self.straight_last), sep=' ')
-        print("self.straight_count : " + format(self.straight_count), sep=' ')
+        print("self.stra    ight_count : " + format(self.straight_count), sep=' ')
 
     def straight_flush_check(self):
         for i in range(4):
