@@ -10,7 +10,7 @@ def top_score(top_list):
 
 class check:
     def __init__(self, card):  # pattern-카드 무늬 배열, number-카드 숫자 배열
-
+        self.score = 0
         self.straight_flush_count = list(range(4))
         self.straight_flush_last = list(range(4))
         self.straight_flush_first = list(range(4))
@@ -26,7 +26,7 @@ class check:
         self.card = card
 
         self.check()
-        print("self.card_number : " + format(self.card_number), sep=' ')
+        #print("self.card_number : " + format(self.card_number), sep=' ')
 
         self.pattern_check()
         self.number_check()
@@ -60,7 +60,7 @@ class check:
                 if self.card_number[i][j] >= 1:
                     self.number_count[j] += 1
         self.number_count[0] = 0
-        print("self.number_count : " + format(self.number_count), sep=' ')
+        #print("self.number_count : " + format(self.number_count), sep=' ')
 
         for i in self.number_count:
             self.count_number[i] += 1
@@ -78,10 +78,10 @@ class check:
             if self.number_count[i] >= 1:
                 self.straight_number.append(i)
 
-        print("self.straight_number : " + format(self.straight_number), sep=' ')
+        #print("self.straight_number : " + format(self.straight_number), sep=' ')
 
         self.straight_first = self.straight_number[0]
-        print("1 self.straight_first : " + format(self.straight_first), sep=' ')
+        #print("1 self.straight_first : " + format(self.straight_first), sep=' ')
 
         self.straight_count = 1
         for i in range(len(self.straight_number) - 1):
@@ -94,9 +94,9 @@ class check:
                 self.straight_count = 1
                 self.straight_first = self.straight_number[i + 1]
 
-        print("2 self.straight_first : " + format(self.straight_first), sep=' ')
-        print("self.straight_last : " + format(self.straight_last), sep=' ')
-        print("self.stra    ight_count : " + format(self.straight_count), sep=' ')
+        #print("2 self.straight_first : " + format(self.straight_first), sep=' ')
+        #print("self.straight_last : " + format(self.straight_last), sep=' ')
+        #print("self.straight_count : " + format(self.straight_count), sep=' ')
 
     def straight_flush_check(self):
         for i in range(4):
@@ -104,11 +104,11 @@ class check:
                 if self.card_number[i][j] >= 1:
                     self.straight_flush_number[i].append(j)
             if len(self.straight_flush_number[i]) >= 1:
-                print("self.straight_flush_number : " + format(self.straight_flush_number), sep=' ')
+                #print("self.straight_flush_number : " + format(self.straight_flush_number), sep=' ')
 
                 self.straight_flush_first[i] = self.straight_flush_number[i][0]
                 self.straight_flush_last[i] = self.straight_flush_number[i][len(self.straight_flush_number[i]) - 1]
-                print("1 self.straight_flush_first[" + format(i) + "] : " + format(self.straight_flush_first[i]), sep=' ')
+                #print("1 self.straight_flush_first[" + format(i) + "] : " + format(self.straight_flush_first[i]), sep=' ')
 
                 self.straight_flush_count[i] = 1
                 for j in range(len(self.straight_flush_number[i]) - 1):
@@ -121,9 +121,9 @@ class check:
                         self.straight_flush_count[i] = 1
                         self.straight_flush_first[i] = self.straight_flush_number[i][j + 1]
 
-                print("2 self.straight_flush_first[" + format(i) + "] : : " + format(self.straight_flush_first[i]), sep=' ')
-                print("self.straight_flush_last[" + format(i) + "] : : " + format(self.straight_flush_last[i]), sep=' ')
-                print("self.straight_flush_count[" + format(i) + "] : " + format(self.straight_flush_count[i]), sep=' ')
+                #print("2 self.straight_flush_first[" + format(i) + "] : : " + format(self.straight_flush_first[i]), sep=' ')
+                #print("self.straight_flush_last[" + format(i) + "] : : " + format(self.straight_flush_last[i]), sep=' ')
+                #print("self.straight_flush_count[" + format(i) + "] : " + format(self.straight_flush_count[i]), sep=' ')
 
         for i in range(4):
             if self.straight_flush_count[i] == 5:
@@ -147,51 +147,54 @@ class check:
 
     def check_score(self):  # 족보 별 점수 계산
 
-        score = 0
-
         if self.is_royal_straight_flush:  # royal straight flush
-            score += 12000 + (4 - self.what_pattern)
+            self.score += 12000 + (4 - self.what_pattern)
 
         elif self.is_straight_flush and self.straight_flush_first[self.what_pattern] == 1:  # back straight flush
-            score += 11000 + (4 - self.what_pattern)
+            self.score += 11000 + (4 - self.what_pattern)
 
         elif self.is_straight_flush:  # straight flush
-            score += 10000 + self.straight_flush_last[self.what_pattern] * 10 + (4 - self.what_pattern)
+            self.score += 10000 + self.straight_flush_last[self.what_pattern] * 10 + (4 - self.what_pattern)
 
         elif self.count_number[4] == 1:  # four card
-            score += 9000 + top_score([self.number_max_count]) * 10
+            self.score += 9000 + top_score([self.number_max_count]) * 10
 
         elif self.count_number[3] == 1 and self.count_number[2] >= 1:  # full house
-            score += 8000 + top_score([self.number_max_count]) * 10
+            self.score += 8000 + top_score([self.number_max_count]) * 10
 
         elif max(self.pattern_count) == 5:  # flush
-            score += 7000 + (4 - self.flush_score())
+            self.score += 7000 + (4 - self.flush_score())
 
         elif self.mountain_check():  # mountain
-            score += 6000 + top_score([max(self.straight_number[1:3])]) * 10
+            self.score += 6000 + top_score([max(self.straight_number[1:3])]) * 10
 
         elif self.straight_count == 5 and self.straight_first == 1:  # back straight
-            score += 5000 + top_score([max(self.straight_number[5:])]) * 10
+            self.score += 5000 + top_score([max(self.straight_number[5:])]) * 10
 
         elif self.straight_count == 5:  # straight
-            score += 4000 + self.straight_last * 10
+            self.score += 4000 + self.straight_last * 10
 
         elif self.count_number[3] >= 1:  # triple
-            score += 3000 + top_score([self.number_max_count]) * 10
+            self.score += 3000 + top_score([self.number_max_count]) * 10
 
         elif self.count_number[2] >= 2:  # two pair
-            score += 2000 + top_score([self.number_max_count]) * 10
+            self.score += 2000 + top_score([self.number_max_count]) * 10
 
         elif self.count_number[2] == 1:  # one pair
-            score += 1000 + top_score([self.number_max_count]) * 10
+            self.score += 1000 + top_score([self.number_max_count]) * 10
 
         else:  # top
             # don't plus score
-            score += top_score(self.straight_number) * 10
+            self.score += top_score(self.straight_number) * 10
 
-        print("score : " + format(score), sep=' ')
+        #print("score : " + format(self.score), sep=' ')
 
+    def getscore(self):
+        return self.score
 
 # 테스트
 test_card = ["D07", "D06", "D05", "S05", "H05", "D10", "D11"]
 test = check(test_card)
+
+score = test.getscore()
+print(score)

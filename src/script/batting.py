@@ -2,26 +2,24 @@
 #되도록 혼자 해보고 싶지만 어떻게 해야될지 모르겠으니 마구잡이로 시작합니다.
 
 class batting:
-    def __init__(self, firstmoney, hvmoney, tablemoney, btmoney, user):
-        self.firstmoney = firstmoney
-        self.btmoney = 10000
-        self.hvmoney = firstmoney - btmoney
-        self.self.tablemoney = self.tablemoney
-        self.turn = 0
+    def __init__(self, hvmoney, btmoney):
+        self.btmoney = btmoney
+        self.hvmoney = hvmoney
+        self.tablemoney = 0
+        self.beformoney = 0
+        self.turn = 1
+        self.raizcount = 0
+        self.callcount = 0
 
-    #raise
-    def raiz(self, hvmoney, beformon, btmoney, times, raizcount, callcount):
-        if hvmoney>=beformon:
-            btmoney = (beformon + btmoney * (times-1))
-            hvmoney = hvmoney - (btmoney * (times-1))
-
-            self.tablemoney += btmoney
-            raizcount = 1
-            callcount = 0
-
-        elif hvmoney<beformon:
-            self.allin(beformon,hvmoney,self.tablemoney)
-
+    # raise
+    def raiz(self, time):
+        btmoney = tablemoney * (time - 1)
+        if hvmoney < btmoney:
+            btmoney = hvmoney
+        beformoney = btmoney
+        tablemoney += btmoney
+        raizcount = 1
+        callcount = 0
 
     # Call
     def Call(self, say, beformon, hvmoney, btmoney, turn, callcount, user, finishscen):
@@ -31,8 +29,8 @@ class batting:
             hvmoney = hvmoney - btmoney
 
             self.tablemoney += btmoney
-            raizcount = 0
-            callcount +=1
+            self.raizcount = 0
+            self.callcount +=1
             self.theend(raizcount, callcount, user, finishscen)
 
         elif hvmoney<beformon:
@@ -54,16 +52,8 @@ class batting:
         if raiz == 1 and call == user:
             return finishscen
 
-
-    #fold
-    def fold(btmoney, hvmoney, least, user):
-        least.remove(user)
-
-
-    #allin
-    def allin(self):
-        self.tablemoney = self.tablemoney + self.hvmoney
-        btmoney = self.hvmoney
+    #올인
+    def allin(tablemoney, hymoney, btmoney):
+        tablemoney = tablemoney + hvmoney
+        btmoney = hvmoney
         hvmoney = 0
-    
-    
