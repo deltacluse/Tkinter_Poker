@@ -17,6 +17,8 @@ class game :
                                 "C01", "C02", "C03", "C04", "C05", "C06", "C07", "C08", "C09", "C10", "C11", "C12", "C13"]
         self.hand=[[],[],[],[]]
         self.order=[]
+        self.player = ["player", "Computer1", "Computer2", "Computer3"]
+        
     #게임 시작
     def game_start(self) :
         self.playing_deck = self.original_card
