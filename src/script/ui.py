@@ -2,8 +2,7 @@ from tkinter import*
 
 root=Tk()
 root.title("PokerGame")
-root.geometry("{0}x{1}+-7+0".format(
-    root.winfo_screenwidth(), root.winfo_screenheight()))
+root.geometry("{0}x{1}+-7+0".format(root.winfo_screenwidth(), root.winfo_screenheight()))
 root.configure(background ='#22741C')
 
 frame = Frame(root)
