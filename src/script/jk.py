@@ -35,7 +35,7 @@ class check:
         self.check_score()
 
     def check(self):
-        for i in range(7):
+        for i in range(len(self.card)):
             if self.card[i][0] == "S":
                 self.card_number[0][int(self.card[i][1:])] += 1
             elif self.card[i][0] == "D":
@@ -145,6 +145,17 @@ class check:
             if self.pattern_count[i] == 5:
                 return i
 
+    def fair_win(self):
+        for i in range(4):
+            if (self.card_number[i][self.number_max_count]):
+                return 4 - i
+
+    def straight_pattern(self):
+        for i in range(4):
+            if (self.card_number[i][self.straight_fisrt]):
+                return 4 - i
+
+
     def check_score(self):  # 족보 별 점수 계산
 
         # royal straight flush
@@ -173,15 +184,15 @@ class check:
 
         # mountain
         elif self.mountain_check():
-            self.score += 6000 + top_score([max(self.straight_number[1:3])]) * 10
+            self.score += 6000 + top_score([max(self.straight_number[1:3])]) * 10 + self.straight_pattern()
 
         # back straight
         elif self.straight_count == 5 and self.straight_first == 1:
-            self.score += 5000 + top_score([max(self.straight_number[5:])]) * 10
+            self.score += 5000 + top_score([max(self.straight_number[5:])]) * 10 + self.straight_pattern()
 
         # straight
         elif self.straight_count == 5:
-            self.score += 4000 + self.straight_last * 10
+            self.score += 4000 + self.straight_last * 10 + self.straight_pattern() + self.straight_pattern()
 
         # triple
         elif self.count_number[3] >= 1:
@@ -189,22 +200,21 @@ class check:
 
         # two pair
         elif self.count_number[2] >= 2:
-            self.score += 2000 + top_score([self.number_max_count]) * 10
+            self.score += 2000 + top_score([self.number_max_count]) * 10 + self.fair_win()
 
         # one pair
         elif self.count_number[2] == 1:
-            self.score += 1000 + top_score([self.number_max_count]) * 10
+            self.score += 1000 + top_score([self.number_max_count]) * 10 + self.fair_win()
 
         # top
         else:
-            self.score += top_score(self.straight_number) * 10
+            self.score += top_score(self.straight_number) * 10 + self.fair_win()
 
     def getscore(self):
         return self.score
 
 # 테스트
-test_card = ["D07", "D06", "D05", "S05", "H05", "D10", "D11"]  # 테스트 패 7장
-test = check(test_card)  # 객체 생성
-
-score = test.getscore()  # 테스트 패의 점수 계산
-print(score)
+#test_card = ["D07", "D06", "D05", "S05", "H05", "D10", "D11"]  # 테스트 패 7장
+#test = check(test_card)  # 객체 생성
+#score = test.getscore()  # 테스트 패의 점수 계산
+#print(score)
