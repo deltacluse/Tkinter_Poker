@@ -16,9 +16,7 @@ class game :
                                 "H01", "H02", "H03", "H04", "H05", "H06", "H07", "H08", "H09", "H10", "H11", "H12", "H13",
                                 "C01", "C02", "C03", "C04", "C05", "C06", "C07", "C08", "C09", "C10", "C11", "C12", "C13"]
         self.hand=[[],[],[],[]]
-        self.order=[]
-        self.player = ["player", "Computer1", "Computer2", "Computer3"]
-        
+
     #게임 시작
     def game_start(self) :
         self.playing_deck = self.original_card
@@ -29,7 +27,6 @@ class game :
         scores=[jk.check(i) for i in [self.hand[j] for j in range(4)]]
         scores=([i.getscore() for i in scores])
         print(scores)
-
         return scores.index(max(scores))
 
     #카드 처음 분배
@@ -40,11 +37,10 @@ class game :
                 del self.playing_deck[0]
 
     # 분배
-    def deal(self, player,count) :
-        for i in range(count) :
-            self.hand[player].append(self.playing_deck[0])
+    def deal(self,order) :
+        for hand in self.hand[order:]+self.hand[:order] :
+            hand.append(self.playing_deck[0])
             del self.playing_deck[0]
-
     #오픈할 카드 선택
     def open(self,number):
         if number!=2:
@@ -90,3 +86,6 @@ class batting:
             self.hvMoney -= (self.btMoney - self.bfMoney)  # 더 내야할 돈만 내기 (이번 턴에 낸 돈 누적을 빼줌)
             self.bfMoney += self.btMoney  # 이번 턴 돈 누적
         tableMoney += self.btMoney  # 테이블 머니에 낸 돈 추가
+
+    def fold(self,player):
+        del self.hand[player]
