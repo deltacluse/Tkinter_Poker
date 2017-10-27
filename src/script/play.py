@@ -16,6 +16,7 @@ class game :
                                 "H01", "H02", "H03", "H04", "H05", "H06", "H07", "H08", "H09", "H10", "H11", "H12", "H13",
                                 "C01", "C02", "C03", "C04", "C05", "C06", "C07", "C08", "C09", "C10", "C11", "C12", "C13"]
         self.hand=[[],[],[],[]]
+        self.player = ["Player", "Computer1", "Computer2", "Computer3"]
 
     #게임 시작
     def game_start(self) :
@@ -29,18 +30,12 @@ class game :
         print(scores)
         return scores.index(max(scores))
 
-    #카드 처음 분배
-    def deal_first(self) :
-        for i in range(3) :
-            for j in range(4) :
-                self.hand[j].append(self.playing_deck[0])
-                del self.playing_deck[0]
-
     # 분배
-    def deal(self,order) :
+    def deal(self, order) :
         for hand in self.hand[order:]+self.hand[:order] :
             hand.append(self.playing_deck[0])
             del self.playing_deck[0]
+
     #오픈할 카드 선택
     def open(self,number):
         if number!=2:
@@ -51,7 +46,7 @@ class batting:
         self.hvMoney = hvMoney  # 보유금 넣기
         self.bfMoney = 0  # 이번 턴에 낸 돈 누적
         self.play = True  # 추가 플레이 가능(올인이면 불가능)
-        self.iscall=0
+        self.iscall = 0
 
     # raise
     def raiz(self, times):  # 레이즈, times는 몇 배 레이즈인지

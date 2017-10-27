@@ -38,6 +38,13 @@ class batting:
             self.bfMoney += self.btMoney  # 이번 턴 돈 누적
         tableMoney += self.btMoney  # 테이블 머니에 낸 돈 추가
 
+#table Set
+def tableSet(self):
+    self.tMoney = 0
+    self.bMoney = 0
+    self.cCount = 0
+    self.rCount = 0
+    self.isCheck = true
 
 # 테스트
 
