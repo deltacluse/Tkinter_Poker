@@ -1,29 +1,59 @@
-from tkinter import*
+from tkinter import *
 
 root=Tk()
+FullWidth = root.winfo_screenwidth()
+FullHeight = root.winfo_screenheight()
 root.title("PokerGame")
-root.geometry("{0}x{1}+-7+0".format(root.winfo_screenwidth(), root.winfo_screenheight()))
+root.geometry("{0}x{1}+-7+0".format(FullWidth, FullHeight))
 root.configure(background ='#22741C')
 
-frame = Frame(root)
+main = Frame(root)
 
 root.resizable(False, False)
 
+setHeight = {
+    'otherFrame' : 310,
+    'battingFrame' : 200,
+    'myFrame' : 200
+}
+setWidth = {
+    'otherFrame': 200,
+    'battingFrame': 200,
+    'myFrame': 200
+}
 
 
+otherFrame = Frame(root, background='white', height=setHeight['otherFrame'], width=setWidth['otherFrame'])
+otherFrame.place(x = 0, y = 0)
+battingFrame = Frame(root, background = 'black', height=setHeight['battingFrame'], width=setWidth['battingFrame'])
+battingFrame.place(x = 0, y = setHeight['otherFrame'])
+myFrame = Frame(root, background = 'white', height=setHeight['myFrame'], width=setWidth['myFrame'])
+myFrame.place(x = 0, y = setHeight['otherFrame'] + setHeight['battingFrame'])
 
+#Other Player Grid
+otherPlayer = []
+otherPlayerSub = [[],[],[]]
+for i in range(3):
+    player = Frame(otherFrame, background = 'white')
+    player.grid(row=0, column=i, padx = FullWidth*0.4/6, pady = 15)
+    otherPlayer.append(player)
+    for j in range(3) :
+        cell = Frame(player, background = 'red', height = 50, width = FullWidth * 0.2)
+        cell.grid(row = j, column = 0, pady = 5)
+        otherPlayerSub[i].append(cell)
+    otherPlayerSub[i][0].configure(height = 150)
 
+#Batting Grid
+"""
 # p : player 1~3 card (나 : player0)
 
-
-
-p_1 = Frame(background='white', height=180, width=300)
+p_1 = Frame(otherFrame, background='white', height=180, width=300)
 p_1.grid(row=0, column=0 , padx=45, pady=20)
 
-p_2 = Frame(background='white', height=180, width=300)
+p_2 = Frame(otherFrame, background='white', height=180, width=300)
 p_2.grid(row=0, column=2 , pady=10)
 
-p_3 = Frame(background='white', height=180, width=300)
+p_3 = Frame(otherFrame, background='white', height=180, width=300)
 p_3.grid(row=0, column=4, columnspan = 2 , pady=10)
 
 # money(소지금)
@@ -81,5 +111,5 @@ Button_5.grid(row = 5, column = 5  , padx=5, pady=5)
 Button_6 =Button( text ="fold")
 Button_6.config(height =3, width = 15 )
 Button_6.grid(row = 6, column = 5  , padx=5, pady=5)
-
+"""
 root.mainloop()
