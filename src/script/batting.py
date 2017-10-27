@@ -1,4 +1,3 @@
-#-*- coding: utf-8 -*-
 class batting:
     def __init__(self, hvMoney):  # 게임 시작할 때 각 플레이어 객체 생성, hvMoney는 보유금
         self.hvMoney = hvMoney  # 보유금 넣기
