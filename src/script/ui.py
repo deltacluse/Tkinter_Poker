@@ -2,16 +2,16 @@ from tkinter import *
 
 root=Tk()
 
-#FullWidth = root.winfo_screenwidth() - 16
-#FullHeight = root.winfo_screenheight() - 100 
+FullWidth = root.winfo_screenwidth() - 16
+FullHeight = root.winfo_screenheight() - 100 
 
-FullWidth = 1366
-FullHeight = 768
+#FullWidth = 1366
+#FullHeight = 768
 
 root.title("PokerGame")
 root.geometry("{0}x{1}+0+20".format(FullWidth, FullHeight))
 root.configure(background ='#22741C')
-root.resizable(False, False)
+#root.resizable(False, False)
 
 setHeight = {
     'otherFrame' : FullHeight * 0.4,
@@ -68,9 +68,9 @@ text_battingMoney.set("mymoney")
 #My Cards
 for i in range(7):
     img_battedMoney = StringVar() #여기에 카드 이미지 링크
-    card = Label(CardFrame, background = 'red', height = int(setHeight['myFrame'] / 17), width = int(FullWidth / 7 / 7 * 0.5), textvariable = img_battedMoney, foreground = 'white')
-    card.grid(row = 0, column = i, padx = FullWidth * 0.1 / 14)
-    img_battedMoney.set("card " + format(i+1))
+    card = Label(CardFrame, background = 'red', height = int(setHeight['myFrame'] / 15), width = int(setHeight['myFrame'] / 8 * 0.75), textvariable = img_battedMoney, foreground = 'white', relief = SOLID)
+    card.place(x = i * (FullWidth * 0.6 - FullHeight * 0.4 * 0.75)/5.83, y = 0)
+    img_battedMoney.set("card " + format(i + 1))
     
 
 #Batting Button
