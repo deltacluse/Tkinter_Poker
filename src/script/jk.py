@@ -150,6 +150,12 @@ class check:
             if (self.card_number[i][self.number_max_count]):
                 return 4 - i
 
+    def straight_pattern(self):
+        for i in range(4):
+            if (self.card_number[i][self.straight_fisrt]):
+                return 4 - i
+
+
     def check_score(self):  # 족보 별 점수 계산
 
         # royal straight flush
@@ -178,15 +184,15 @@ class check:
 
         # mountain
         elif self.mountain_check():
-            self.score += 6000 + top_score([max(self.straight_number[1:3])]) * 10
+            self.score += 6000 + top_score([max(self.straight_number[1:3])]) * 10 + self.straight_pattern()
 
         # back straight
         elif self.straight_count == 5 and self.straight_first == 1:
-            self.score += 5000 + top_score([max(self.straight_number[5:])]) * 10
+            self.score += 5000 + top_score([max(self.straight_number[5:])]) * 10 + self.straight_pattern()
 
         # straight
         elif self.straight_count == 5:
-            self.score += 4000 + self.straight_last * 10
+            self.score += 4000 + self.straight_last * 10 + self.straight_pattern() + self.straight_pattern()
 
         # triple
         elif self.count_number[3] >= 1:
