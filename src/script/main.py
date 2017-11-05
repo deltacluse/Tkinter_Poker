@@ -1,30 +1,29 @@
-from play import *
+import play
+import ui
 
-order=0
+order = 0 #턴 순서
 
 #카드분배(3장씩)
-deck = game(100)
+deck = play.game(100)
 deck.game_start()
-#print(deck.playing_deck)
-for i in range(3) :
+for _ in range(3) :
     deck.deal(order)
 print(deck.hand)
-#print(deck.playing_deck)
 
 #오픈할 카드 선택
-deck.open(0) #첫번째 있는 카드를 오픈
+deck.open(0) #첫 번째 카드를 오픈
 print(deck.hand)
-#print(deck.playing_deck)
 
 #오픈된 족보로 순서 결정
 order=deck.ordering()
 print(deck.player[order])
 
 #베팅페이즈(플레이어객체생성)
-user = batting(100000)
-com1 = batting(100000)
-com2 = batting(100000)
-com3 = batting(100000)
+user = play.batting(100000)
+com1 = play.batting(100000)
+com2 = play.batting(100000)
+com3 = play.batting(100000)
+player = [user, com1, com2, com3]
 
 while len(deck.hand[0]) < 6:
     deck.deal(order)    #순서대로 카드분배(1장씩)

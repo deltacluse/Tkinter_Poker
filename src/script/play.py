@@ -16,7 +16,6 @@ class game :
                                 "H01", "H02", "H03", "H04", "H05", "H06", "H07", "H08", "H09", "H10", "H11", "H12", "H13",
                                 "C01", "C02", "C03", "C04", "C05", "C06", "C07", "C08", "C09", "C10", "C11", "C12", "C13"]
         self.hand=[[],[],[],[]]
-        self.player = ["Player", "Computer1", "Computer2", "Computer3"]
 
     #게임 시작
     def game_start(self) :
@@ -25,22 +24,23 @@ class game :
 
     #순서 결정
     def ordering(self) :
-        scores=[jk.check(i) for i in [self.hand[j] for j in range(4)]]
-        scores=([i.getscore() for i in scores])
-        print(scores)
+        score_check=[jk.check(i) for i in [self.hand[j] for j in range(4)]]
+        scores=([i.getscore() for i in score_check])
         return scores.index(max(scores))
 
     # 분배
     def deal(self, order) :
-        for hand in self.hand[order:]+self.hand[:order] :
+        for hand in self.hand[order:] + self.hand[:order] :
             hand.append(self.playing_deck[0])
             del self.playing_deck[0]
 
     #오픈할 카드 선택
     def open(self,number):
-        if number!=2:
+        if number != 2:
             self.hand[0][2],self.hand[0][number]=self.hand[0][number],self.hand[0][2] #위치 변경
 
+
+#배팅
 class batting:
     def __init__(self, hvMoney):  # 게임 시작할 때 각 플레이어 객체 생성, hvMoney는 보유금
         self.hvMoney = hvMoney  # 보유금 넣기
