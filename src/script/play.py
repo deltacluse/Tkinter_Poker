@@ -41,6 +41,7 @@ class game :
         for hand in self.hand[order:]+self.hand[:order] :
             hand.append(self.playing_deck[0])
             del self.playing_deck[0]
+        print(self.hand)
     #오픈할 카드 선택
     def open(self,number):
         if number!=2:
@@ -89,4 +90,3 @@ class batting:
 
     def fold(self,player):
         del self.hand[player]
-
