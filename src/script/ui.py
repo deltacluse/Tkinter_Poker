@@ -1,12 +1,13 @@
 from tkinter import *
+from PIL import Image
 
 root=Tk()
 
-#FullWidth = root.winfo_screenwidth() - 16
-#FullHeight = root.winfo_screenheight() - 100 
+FullWidth = root.winfo_screenwidth() - 16
+FullHeight = root.winfo_screenheight() - 100
 
-FullWidth = 1366
-FullHeight = 768
+# FullWidth = 800
+# FullHeight = 600
 
 root.title("PokerGame")
 root.geometry("{0}x{1}+0+20".format(FullWidth, FullHeight))
@@ -68,11 +69,19 @@ text_battingMoney.set("mymoney")
 #My Cards
 img_battedMoney = []
 for i in range(7):
-    img_battedMoney.append(PhotoImage(file='..\image\c{0} (1).png'.format(i+1)))
-    img_battedMoney[i] = img_battedMoney[i].zoom(int(setHeight['myFrame'] * 0.75 / 65), int(setHeight['myFrame'] / 92))
-    card = Label(CardFrame, background = 'white', height = setHeight['myFrame'] * 0.8, width = setHeight['myFrame'] * 0.75 * 0.8, image = img_battedMoney[i])
+    img_battedMoney.append(Image.open("..\image\c{0}.png".format(i+1)))
+    img_battedMoney[i] = img_battedMoney[i].resize((int(setHeight['myFrame'] * 0.75), int(setHeight['myFrame'])))
+    card = Label(CardFrame, background = 'white', height = setHeight['myFrame'] * 0.8, width = setHeight['myFrame'] * 0.75 * 0.8, image = img_battedMoney[i], relief = SOLID)
     card.place(x = i * (FullWidth * 0.6 / 8) + (FullWidth * 0.3 * 0.25 - setHeight['myFrame'] * 0.75 * 0.4), y = setHeight['myFrame'] * 0.1)
-    
+
+#My Cards
+# img_battedMoney = []
+# for i in range(7):
+#     img_battedMoney.append(PhotoImage(file = "..\image\c{0}.png".format(i+1)).subsample(2,2))
+#     img_battedMoney[i] = img_battedMoney[i].subsample(int(179 / setHeight['myFrame'] * 0.75), 251)
+#     img_battedMoney[i] = img_battedMoney[i].zoom(int(setHeight['myFrame'] * 0.75), int(setHeight['myFrame']))
+#     card = Label(CardFrame, background = 'white', height = setHeight['myFrame'] * 0.8, width = setHeight['myFrame'] * 0.75 * 0.8, image = img_battedMoney[i], relief = SOLID)
+#     card.place(x = i * (FullWidth * 0.6 / 8) + (FullWidth * 0.3 * 0.25 - setHeight['myFrame'] * 0.75 * 0.4), y = setHeight['myFrame'] * 0.1)
 
 #Batting Button
 Button_1 = Button(ButtonFrame, text ="1.5 raise")
