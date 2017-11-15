@@ -1,4 +1,6 @@
 from tkinter import *
+import PIL.Image
+import PIL.ImageTk
 
 root=Tk()
 
@@ -66,23 +68,23 @@ battedMoney.pack(pady = setHeight['myFrame'] * 0.2)
 text_battingMoney.set("mymoney")
 
 #My Cards
-# img_battedMoney = []
-# for i in range(7):
-#     img_battedMoney.append((PhotoImage(file="..\image\D{0}.png".format(i+1))))
-#     img_battedMoney[i] = img_battedMoney[i].resize((int(setHeight['myFrame'] * 0.75), int(setHeight['myFrame'])))
-#     card = Label(CardFrame, background = 'white', height = setHeight['myFrame'] * 0.8, width = setHeight['myFrame'] * 0.75 * 0.8, image = img_battedMoney[i])
-#     card.place(x = i * (FullWidth * 0.6 / 8) + (FullWidth * 0.3 * 0.25 - setHeight['myFrame'] * 0.75 * 0.4), y = setHeight['myFrame'] * 0.1)
-
-#My Cards
 img_battedMoney = []
 for i in range(7):
-    img_battedMoney.append(PhotoImage(file = "..\image\c{0}.png".format(i+1)).subsample(2,2))
-    print(img_battedMoney[i])
-    # img_battedMoney[i] = img_battedMoney[i].subsample(int(179 / setHeight['myFrame'] * 0.75), 251)
-    # img_battedMoney[i] = img_battedMoney[i].zoom(int(setHeight['myFrame'] * 0.75), int(setHeight['myFrame']))
-    card = Label(CardFrame, background = 'white', image = img_battedMoney[i], relief = SOLID)
-    card.configure(height = setHeight['myFrame'] * 0.8, width = setHeight['myFrame'] * 0.75 * 0.8)
+    img_battedMoney.append(PIL.Image.open("..\image\D{0}.png".format(i+1)))
+    img_battedMoney[i] = PIL.ImageTk.PhotoImage(img_battedMoney[i].resize((int(setHeight['myFrame'] * 0.75), int(setHeight['myFrame']))))
+    card = Label(CardFrame, background = 'white', height = setHeight['myFrame'] * 0.8, width = setHeight['myFrame'] * 0.75 * 0.8, image = img_battedMoney[i])
     card.place(x = i * (FullWidth * 0.6 / 8) + (FullWidth * 0.3 * 0.25 - setHeight['myFrame'] * 0.75 * 0.4), y = setHeight['myFrame'] * 0.1)
+
+# #My Cards
+# img_battedMoney = []
+# for i in range(7):
+#     img_battedMoney.append(PhotoImage(file = "..\image\c{0}.png".format(i+1)).subsample(2,2))
+#     print(img_battedMoney[i])
+#     # img_battedMoney[i] = img_battedMoney[i].subsample(int(179 / setHeight['myFrame'] * 0.75), 251)
+#     # img_battedMoney[i] = img_battedMoney[i].zoom(int(setHeight['myFrame'] * 0.75), int(setHeight['myFrame']))
+#     card = Label(CardFrame, background = 'white', image = img_battedMoney[i], relief = SOLID)
+#     card.configure(height = setHeight['myFrame'] * 0.8, width = setHeight['myFrame'] * 0.75 * 0.8)
+#     card.place(x = i * (FullWidth * 0.6 / 8) + (FullWidth * 0.3 * 0.25 - setHeight['myFrame'] * 0.75 * 0.4), y = setHeight['myFrame'] * 0.1)
 
 #Batting Button
 Button_1 = Button(ButtonFrame, text ="1.5 raise")

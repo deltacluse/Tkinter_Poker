@@ -16,6 +16,7 @@ class game :
                                 "H01", "H02", "H03", "H04", "H05", "H06", "H07", "H08", "H09", "H10", "H11", "H12", "H13",
                                 "C01", "C02", "C03", "C04", "C05", "C06", "C07", "C08", "C09", "C10", "C11", "C12", "C13"]
         self.hand=[[],[],[],[]]
+        self.player = ['user', 'com1', 'com2', 'com3']
 
     #게임 시작
     def game_start(self) :
