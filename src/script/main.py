@@ -1,6 +1,7 @@
 import play
 import ui
 
+game = ui.Poker()
 order = 0 #턴 순서
 
 #카드분배(3장씩)
