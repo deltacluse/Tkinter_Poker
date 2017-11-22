@@ -61,7 +61,7 @@ class Poker:
         self.ai_card = [[], [], []]
         for i in range(3):
             for j in range(7):
-                self.img_ai_cards[i].append(PIL.Image.open("..\image\{0}.png".format(self.game.hand[i][j])))
+                self.img_ai_cards[i].append(PIL.Image.open("..\image\{0}.png".format(self.game.hand[i+1][j])))
                 self.img_ai_cards[i][j] = PIL.ImageTk.PhotoImage(self.img_ai_cards[i][j].resize((int(self.set_height['self.frame_other'] * 3 / 7 * 0.75), int(self.set_height['self.frame_other'] * 3 / 7))))
                 card = Label(self.other_cell_sub[i][0], width=self.set_height['self.frame_other'] * 3 / 7 * 0.75, height=self.set_height['self.frame_other'] * 3 / 7, image=self.img_ai_cards[i][j], relief=SOLID)
                 card.configure(image=self.img_ai_cards[i][j])
@@ -143,6 +143,7 @@ class Poker:
             self.user_card[i].configure(image=self.img_user_cards[i])
             
     def ai_image_update(self, index):
+        index = index - 1
         for j in range(7):
             self.img_ai_cards[index][j] = (PIL.Image.open("..\image\{0}.png".format(self.game.hand[index][j])))
             self.img_ai_cards[index][j] = PIL.ImageTk.PhotoImage(self.img_ai_cards[index][j].resize((int(self.set_height['self.frame_other'] * 3 / 7 * 0.75), int(self.set_height['self.frame_other'] * 3 / 7))))
@@ -199,7 +200,7 @@ class Poker:
     def fold(self):
         self.change_button_state('disabled')
         # Ai 작동 시작
-
+        self.ai.ai_turn()
         # Ai 작동 종료
 
     def game_finish(self):
