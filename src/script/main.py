@@ -2,6 +2,7 @@ from tkinter import *
 import PIL.Image
 import PIL.ImageTk
 import play
+import ai_algorism
 
 
 class Poker:
@@ -125,8 +126,12 @@ class Poker:
         button_6.grid(row=2, column=1, padx=self.full_width * 0.2 * 0.04, pady=self.set_height['self.frame_user'] * 0.02)
         self.buttons.append(button_6)
 
-    def ui_update(self):
+    def ui_update(self, index):
         self.table_money_update()
+        if index == 0:
+            self.user_image_update()
+        elif 1 <= index <= 3:
+            self.ai_image_update(index)
         
     def table_money_update(self):
         self.text_batted_money.set(self.betting.table_money)
@@ -138,7 +143,10 @@ class Poker:
             self.user_card[i].configure(image=self.img_user_cards[i])
             
     def ai_image_update(self, index):
-        pass
+        for j in range(7):
+            self.img_ai_cards[index][j] = (PIL.Image.open("..\image\{0}.png".format(self.game.hand[index][j])))
+            self.img_ai_cards[index][j] = PIL.ImageTk.PhotoImage(self.img_ai_cards[index][j].resize((int(self.set_height['self.frame_other'] * 3 / 7 * 0.75), int(self.set_height['self.frame_other'] * 3 / 7))))
+            self.ai_card[index][j].configure(image=self.img_ai_cards[index][j])
 
     def playing(self):
         self.turn = 1
@@ -148,6 +156,7 @@ class Poker:
         # 베팅페이즈(플레이어객체생성)
         self.have_money = [100000, 100000, 100000, 100000]
         self.betting = play.Betting(self.have_money)
+        self.ai = ai_algorism.Ai(self)  # ai 객체 생성
 
         # 카드분배(3장씩)
         self.game = play.Game(self.player)
@@ -159,7 +168,9 @@ class Poker:
         self.order = self.game.ordering()  # 오픈된 족보로 순서 결정
 
     def turn_check(self):
-        if self.betting.call_count == 3:
+        if self.turn == 5:
+            self.game_finish()
+        elif self.betting.call_count == 3:
             self.next_turn()
 
     def change_button_state(self, state):
@@ -178,15 +189,10 @@ class Poker:
             self.change_button_state('disabled')
 
     def next(self):
-        self.ui_update()
+        self.ui_update(0)
         self.change_button_state('disabled')
         # Ai 작동 시작
-        self.betting.call(1)
-        self.turn_check()
-        self.betting.call(2)
-        self.turn_check()
-        self.betting.call(3)
-        self.turn_check()
+        self.ai.ai_turn()
         # Ai 작동 종료
         self.change_button_state('normal')
 
@@ -195,6 +201,9 @@ class Poker:
         # Ai 작동 시작
 
         # Ai 작동 종료
+
+    def game_finish(self):
+        pass
 
 
 a = Poker()
