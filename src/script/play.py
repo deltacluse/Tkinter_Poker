@@ -18,8 +18,9 @@ class Game:
 
     # 순서 결정
     def ordering(self):
-        score_check = [jk.Check(i) for i in [self.hand[j] for j in range(4)]]
+        score_check = [jk.Check(i[2:7]) for i in [self.hand[j] for j in range(4)]]
         scores = ([i.get_score() for i in score_check])
+        print(scores)
         return scores.index(max(scores))
 
     # 분배
@@ -29,18 +30,18 @@ class Game:
             del self.playing_deck[0]
 
     # 오픈할 카드 선택
-    def open(self, number):
+    def open(self, index, number):
         if number != 2:
-            self.hand[0][2], self.hand[0][number] = self.hand[0][number], self.hand[0][2]  # 위치 변경
+            self.hand[index][2], self.hand[index][number] = self.hand[index][number], self.hand[index][2]  # 위치 변경
 
     def fold(self, who):
         del self.player[self.player.index(who)]
-        print(self.player)
 
 
 # 배팅
 class Betting:
-    def __init__(self, have_money):  # 게임 시작할 때 각 플레이어 객체 생성 / have_money[index] : 보유금
+    def __init__(self, parent, have_money):  # 게임 시작할 때 각 플레이어 객체 생성 / have_money[index] : 보유금
+        self.parent = parent
         self.have_money = have_money  # 보유금
         self.play = True  # 추가 플레이 가능(올인이면 불가능)
         self.accumulate_money = [0, 0, 0, 0]  # 턴마다 낸 돈 누적
@@ -61,7 +62,8 @@ class Betting:
             self.accumulate_money[index] += self.betting_money  # 이번 턴 돈 누적
         self.before_money = self.betting_money  # 다음 사람이 낼 금액
         self.table_money += self.betting_money  # 테이블 머니에 낸 돈 추가
-        self.call_count = 0
+        self.call_count = 0  # 콜 개수 초기화
+        self.parent.is_turn_start = False  # 턴 시작이 아님
 
     # Call
     def call(self, index):
@@ -74,7 +76,8 @@ class Betting:
             self.have_money[index] -= (self.betting_money - self.accumulate_money[index])  # 더 내야할 돈만 내기 (이번 턴에 낸 돈 누적을 빼줌)
             self.accumulate_money[index] += self.betting_money  # 이번 턴 돈 누적
         self.table_money += self.betting_money  # 테이블 머니에 낸 돈 추가
-        self.call_count += 1
+        self.call_count += 1  # 콜 개수 추가
+        self.parent.is_turn_start = False  # 턴 시작이 아님
 
     def finish_turn(self):
         self.accumulate_money = [0, 0, 0, 0]

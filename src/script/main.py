@@ -7,11 +7,31 @@ import ai_algorism
 
 class Poker:
     def __init__(self):
-        self.playing()
+        self.turn = 1
+        self.player = ['user', 'com1', 'com2', 'com3']
+        self.order = 0  # 턴 순서
+        self.is_turn_start = True  # 턴 시작인지
 
+        # 베팅페이즈(플레이어객체생성)
+        self.have_money = [100000, 100000, 100000, 100000]
+        self.betting = play.Betting(self, self.have_money)
+        self.ai = ai_algorism.Ai(self)  # ai 객체 생성
+
+        # 카드분배(3장씩)
+        self.game = play.Game(self.player)
+        self.game.game_start()
+        for _ in range(3):
+            self.game.distribute(self.order)
+
+        self.game.open(0, 0)  # 오픈할 카드 선택
+        self.ai.open()
+        self.order = self.game.ordering()  # 오픈된 족보로 순서 결정
+
+        # 화면 구성
         self.root = Tk()
         self.set_window()  # 창 설정
         self.create_widgets()  # 화면 구성
+        self.next(self.order)  # 차례대로 진행
         self.root.mainloop()
 
     def set_window(self):
@@ -61,11 +81,14 @@ class Poker:
         self.ai_card = [[], [], []]
         for i in range(3):
             for j in range(7):
-                self.img_ai_cards[i].append(PIL.Image.open("..\image\{0}.png".format(self.game.hand[i+1][j])))
+                if 0 <= j <= 2:
+                    self.img_ai_cards[i].append(PIL.Image.open("..\image\{0}.png".format(0)))
+                else:
+                    self.img_ai_cards[i].append(PIL.Image.open("..\image\{0}.png".format(self.game.hand[i+1][j])))
                 self.img_ai_cards[i][j] = PIL.ImageTk.PhotoImage(self.img_ai_cards[i][j].resize((int(self.set_height['self.frame_other'] * 3 / 7 * 0.75), int(self.set_height['self.frame_other'] * 3 / 7))))
                 card = Label(self.other_cell_sub[i][0], width=self.set_height['self.frame_other'] * 3 / 7 * 0.75, height=self.set_height['self.frame_other'] * 3 / 7, image=self.img_ai_cards[i][j], relief=SOLID)
                 card.configure(image=self.img_ai_cards[i][j])
-                card.place(x=i * (self.full_width * 0.2 - self.set_height['self.frame_other'] * 3 / 7 * 0.75), y=0)
+                card.place(x=j * (self.full_width * 0.2 / 9.5), y=0)
                 self.ai_card[i].append(card)
 
         # Batting Grid
@@ -101,23 +124,23 @@ class Poker:
 
         # Batting Button
         self.buttons = []
-        button_1 = Button(self.frame_button, text="1.5 raise", command=lambda: (self.betting.raise_(0, 1.5), self.next()))
+        button_1 = Button(self.frame_button, text="1.5 raise", command=lambda: (self.betting.raise_(0, 1.5), self.next(1)))
         button_1.config(width=int(self.full_width / 7 * 0.2 * 0.4), height=int(self.set_height['self.frame_user'] / 16 * 0.3))
         button_1.grid(row=0, column=0, padx=self.full_width * 0.2 * 0.04, pady=self.set_height['self.frame_user'] * 0.02)
         self.buttons.append(button_1)
-        button_2 = Button(self.frame_button, text="2 raise", command=lambda: (self.betting.raise_(0, 2), self.next()))
+        button_2 = Button(self.frame_button, text="2 raise", command=lambda: (self.betting.raise_(0, 2), self.next(1)))
         button_2.config(width=int(self.full_width / 7 * 0.2 * 0.4), height=int(self.set_height['self.frame_user'] / 16 * 0.3))
         button_2.grid(row=1, column=0, padx=self.full_width * 0.2 * 0.04, pady=self.set_height['self.frame_user'] * 0.02)
         self.buttons.append(button_2)
-        button_3 = Button(self.frame_button, text="4 raise", command=lambda: (self.betting.raise_(0, 4), self.next()))
+        button_3 = Button(self.frame_button, text="4 raise", command=lambda: (self.betting.raise_(0, 4), self.next(1)))
         button_3.config(width=int(self.full_width / 7 * 0.2 * 0.4), height=int(self.set_height['self.frame_user'] / 16 * 0.3))
         button_3.grid(row=2, column=0, padx=self.full_width * 0.2 * 0.04, pady=self.set_height['self.frame_user'] * 0.02)
         self.buttons.append(button_3)
-        button_4 = Button(self.frame_button, text="check", command=lambda: self.next(), state='disabled')
+        button_4 = Button(self.frame_button, text="check", command=lambda: (self.check(), self.next(1)), state='disabled')
         button_4.config(width=int(self.full_width / 7 * 0.2 * 0.4), height=int(self.set_height['self.frame_user'] / 16 * 0.3))
         button_4.grid(row=0, column=1, padx=self.full_width * 0.2 * 0.04, pady=self.set_height['self.frame_user'] * 0.02)
         self.buttons.append(button_4)
-        button_5 = Button(self.frame_button, text="call", command=lambda: (self.betting.call(0), self.turn_check(), self.next()))
+        button_5 = Button(self.frame_button, text="call", command=lambda: self.call())
         button_5.config(width=int(self.full_width / 7 * 0.2 * 0.4), height=int(self.set_height['self.frame_user'] / 16 * 0.3))
         button_5.grid(row=1, column=1, padx=self.full_width * 0.2 * 0.04, pady=self.set_height['self.frame_user'] * 0.02)
         self.buttons.append(button_5)
@@ -126,13 +149,11 @@ class Poker:
         button_6.grid(row=2, column=1, padx=self.full_width * 0.2 * 0.04, pady=self.set_height['self.frame_user'] * 0.02)
         self.buttons.append(button_6)
 
-    def ui_update(self, index):
+    def ui_update(self):
         self.table_money_update()
-        if index == 0:
-            self.user_image_update()
-        elif 1 <= index <= 3:
-            self.ai_image_update(index)
-        
+        self.user_image_update()
+        self.ai_image_update()
+
     def table_money_update(self):
         self.text_batted_money.set(self.betting.table_money)
 
@@ -141,70 +162,76 @@ class Poker:
             self.img_user_cards[i] = PIL.Image.open("..\image\{0}.png".format(self.game.hand[0][i]))
             self.img_user_cards[i] = PIL.ImageTk.PhotoImage(self.img_user_cards[i].resize((int(self.set_height['self.frame_user'] * 0.75 * 0.8), int(self.set_height['self.frame_user'] * 0.8))))
             self.user_card[i].configure(image=self.img_user_cards[i])
-            
-    def ai_image_update(self, index):
-        index = index - 1
-        for j in range(7):
-            self.img_ai_cards[index][j] = (PIL.Image.open("..\image\{0}.png".format(self.game.hand[index][j])))
-            self.img_ai_cards[index][j] = PIL.ImageTk.PhotoImage(self.img_ai_cards[index][j].resize((int(self.set_height['self.frame_other'] * 3 / 7 * 0.75), int(self.set_height['self.frame_other'] * 3 / 7))))
-            self.ai_card[index][j].configure(image=self.img_ai_cards[index][j])
 
-    def playing(self):
-        self.turn = 1
-        self.player = ['user', 'com1', 'com2', 'com3']
-        self.order = 0  # 턴 순서
-
-        # 베팅페이즈(플레이어객체생성)
-        self.have_money = [100000, 100000, 100000, 100000]
-        self.betting = play.Betting(self.have_money)
-        self.ai = ai_algorism.Ai(self)  # ai 객체 생성
-
-        # 카드분배(3장씩)
-        self.game = play.Game(self.player)
-        self.game.game_start()
-        for _ in range(3):
-            self.game.distribute(self.order)
-
-        self.game.open(0)  # 오픈할 카드 선택
-        self.order = self.game.ordering()  # 오픈된 족보로 순서 결정
+    def ai_image_update(self):
+        for i in range(3):
+            for j in range(2, 6):
+                self.img_ai_cards[i][j] = (PIL.Image.open("..\image\{0}.png".format(self.game.hand[i+1][j])))
+                self.img_ai_cards[i][j] = PIL.ImageTk.PhotoImage(self.img_ai_cards[i][j].resize((int(self.set_height['self.frame_other'] * 3 / 7 * 0.75), int(self.set_height['self.frame_other'] * 3 / 7))))
+                self.ai_card[i][j].configure(image=self.img_ai_cards[i][j])
 
     def turn_check(self):
-        if self.turn == 5:
-            self.game_finish()
-        elif self.betting.call_count == 3:
-            self.next_turn()
+        print("call count : " + format(self.betting.call_count))
+        if self.betting.call_count == 3:
+            self.turn += 1
+            if self.turn == 6:
+                self.game_finish()
+            else:
+                self.next_turn()
+            return True  # 턴이 넘어감
+        return False  # 턴이 안 넘어감
 
     def change_button_state(self, state):
-        for i in range(6):
-            if i != 3:
-                self.buttons[i].configure(state=format(state))
+        if state == 'normal':
+            for i in range(6):
+                if i != 3:
+                    self.buttons[i].configure(state='normal')
+        elif state == 'disabled':
+            for i in range(6):
+                self.buttons[i].configure(state='disabled')
 
     def next_turn(self):
+        self.is_turn_start = True
+        print("\n\nturn : " + format(self.turn))
         self.betting.finish_turn()
         self.game.distribute(self.order)  # 순서대로 카드분배(1장씩)
         self.user_image_update()
         self.order = self.game.ordering()  # 오픈된 족보로 순서 결정
-        self.turn += 1
-        self.buttons[3].configure(state='normal')
-        if self.turn == 5:
-            self.change_button_state('disabled')
+        self.next(self.order)
 
-    def next(self):
-        self.ui_update(0)
-        self.change_button_state('disabled')
+    def next(self, index):
+        self.ui_update()
         # Ai 작동 시작
-        self.ai.ai_turn()
+        if 1 <= index <= 3:
+            self.ai.ai_turn(index)
+            self.buttons[3].configure(state='disabled')
+            self.buttons[4].configure(state='normal')
+        elif index == 0:
+            self.buttons[3].configure(state='normal')
+            self.buttons[4].configure(state='disabled')
         # Ai 작동 종료
-        self.change_button_state('normal')
+
+    def check(self):
+        self.is_turn_start = False
+
+    def call(self):
+        self.betting.call(0)
+        if not self.turn_check():
+            self.next(1)
 
     def fold(self):
         self.change_button_state('disabled')
         # Ai 작동 시작
-        self.ai.ai_turn()
+        while self.turn < 6:
+            self.ai.ai_turn(1)
         # Ai 작동 종료
 
     def game_finish(self):
-        pass
+        for i in range(3):
+            for j in range(7):
+                self.img_ai_cards[i][j] = (PIL.Image.open("..\image\{0}.png".format(self.game.hand[i][j])))
+                self.img_ai_cards[i][j] = PIL.ImageTk.PhotoImage(self.img_ai_cards[i][j].resize((int(self.set_height['self.frame_other'] * 3 / 7 * 0.75), int(self.set_height['self.frame_other'] * 3 / 7))))
+                self.ai_card[i][j].configure(image=self.img_ai_cards[i][j])
 
 
 a = Poker()

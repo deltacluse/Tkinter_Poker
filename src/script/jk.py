@@ -25,7 +25,6 @@ class Check:
         self.straight_number = []
         self.straight_flush_number = [[], [], [], []]
         self.card = card
-
         self.check()
 
         self.pattern_check()
@@ -211,4 +210,3 @@ class Check:
 
     def get_score(self):
         return self.score
-    
