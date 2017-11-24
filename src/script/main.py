@@ -169,6 +169,7 @@ class Poker:
         self.buttons.append(button_6)
 
     def ui_update(self):
+        self.text_update()
         self.root.update()
         self.user_image_update()
         self.ai_image_update()
@@ -216,6 +217,7 @@ class Poker:
         self.next(self.order)
 
     def next(self, index):
+        self.ui_update()
         if 1 <= index <= 3:
             self.change_button_state('disabled')
             self.buttons[3].configure(state='disabled')
