@@ -59,7 +59,6 @@ class Check:
                 if self.card_number[i][j] >= 1:
                     self.number_count[j] += 1
         self.number_count[0] = 0
-        # print("self.number_count : " + format(self.number_count), sep=' ')
 
         for i in self.number_count:
             self.count_number[i] += 1
@@ -70,17 +69,12 @@ class Check:
                 self.number_max = self.number_count[i]
                 self.number_max_count = i
 
-            #         print(self.number_count[i])  #  각 숫자의 개수가 잘 들어갔나 테스트
-
     def straight_check(self):
         for i in range(14):
             if self.number_count[i] >= 1:
                 self.straight_number.append(i)
 
-        # print("self.straight_number : " + format(self.straight_number), sep=' ')
-
         self.straight_first = self.straight_number[0]
-        # print("1 self.straight_first : " + format(self.straight_first), sep=' ')
 
         self.straight_count = 1
         for i in range(len(self.straight_number) - 1):
@@ -93,21 +87,15 @@ class Check:
                 self.straight_count = 1
                 self.straight_first = self.straight_number[i + 1]
 
-        # print("2 self.straight_first : " + format(self.straight_first), sep=' ')
-        # print("self.straight_last : " + format(self.straight_last), sep=' ')
-        # print("self.straight_count : " + format(self.straight_count), sep=' ')
-
     def straight_flush_check(self):
         for i in range(4):
             for j in range(14):
                 if self.card_number[i][j] >= 1:
                     self.straight_flush_number[i].append(j)
             if len(self.straight_flush_number[i]) >= 1:
-                # print("self.straight_flush_number : " + format(self.straight_flush_number), sep=' ')
 
                 self.straight_flush_first[i] = self.straight_flush_number[i][0]
                 self.straight_flush_last[i] = self.straight_flush_number[i][len(self.straight_flush_number[i]) - 1]
-                # print("1 self.straight_flush_first[" + format(i) + "] : " + format(self.straight_flush_first[i]), sep=' ')
 
                 self.straight_flush_count[i] = 1
                 for j in range(len(self.straight_flush_number[i]) - 1):
@@ -119,10 +107,6 @@ class Check:
                     else:
                         self.straight_flush_count[i] = 1
                         self.straight_flush_first[i] = self.straight_flush_number[i][j + 1]
-
-                # print("2 self.straight_flush_first[" + format(i) + "] : : " + format(self.straight_flush_first[i]), sep=' ')
-                # print("self.straight_flush_last[" + format(i) + "] : : " + format(self.straight_flush_last[i]), sep=' ')
-                # print("self.straight_flush_count[" + format(i) + "] : " + format(self.straight_flush_count[i]), sep=' ')
 
         for i in range(4):
             if self.straight_flush_count[i] == 5:
@@ -146,12 +130,12 @@ class Check:
 
     def fair_win(self):
         for i in range(4):
-            if (self.card_number[i][self.number_max_count]):
+            if self.card_number[i][self.number_max_count]:
                 return 4 - i
 
     def straight_pattern(self):
         for i in range(4):
-            if (self.card_number[i][self.straight_first]):
+            if self.card_number[i][self.straight_first]:
                 return 4 - i
 
     def check_score(self):  # 족보 별 점수 계산
